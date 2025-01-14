@@ -1,4 +1,4 @@
-# Sekiato - Code Security Scanner
+# Sekiato - A Vulnerability Sentinel
 
 A web-based application for scanning and identifying security vulnerabilities in code.
 
