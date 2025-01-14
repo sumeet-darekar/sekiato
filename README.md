@@ -39,6 +39,7 @@ npx drizzle-kit push:pg
 
 # Start development server
 npm run dev
+```
 
 ## Demo
 
