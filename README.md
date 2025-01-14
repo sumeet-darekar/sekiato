@@ -49,4 +49,4 @@ Watch the demo video to see Sekiato in action:
 - Severity classification
 - Project management
 
-![Demo Preview](https://youtu.be/HOISjf4AFT8)
+[Demo Preview](https://youtu.be/HOISjf4AFT8)
