@@ -17,7 +17,7 @@ A web-based application for scanning and identifying security vulnerabilities in
 - Drizzle ORM
 - TailwindCSS
 - Shadcn/ui Components
-- PHP Code Analysis API
+- PHP, JS Code Analysis API
 
 ## Installation
 
