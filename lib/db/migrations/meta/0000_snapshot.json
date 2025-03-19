@@ -1,5 +1,5 @@
 {
-  "id": "71dab825-bc1b-44ec-a003-ab41c73f1724",
+  "id": "5d7bbfcb-84be-428d-90b2-4e01549101b9",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -12,13 +12,6 @@
           "name": "id",
           "type": "uuid",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "uuid",
-          "primaryKey": false,
           "notNull": true
         },
         "name": {
@@ -27,49 +20,42 @@
           "primaryKey": false,
           "notNull": true
         },
-        "repository_url": {
-          "name": "repository_url",
+        "repository": {
+          "name": "repository",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "code": {
+          "name": "code",
           "type": "text",
           "primaryKey": false,
           "notNull": false
         },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
+        "last_scan": {
+          "name": "last_scan",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "default": "now()"
         },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
+        "status": {
+          "name": "status",
+          "type": "varchar(50)",
           "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
+          "notNull": false,
+          "default": "'pending'"
+        },
+        "issues": {
+          "name": "issues",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "projects_user_id_users_id_fk": {
-          "name": "projects_user_id_users_id_fk",
-          "tableFrom": "projects",
-          "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -91,32 +77,25 @@
           "name": "project_id",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "status": {
           "name": "status",
-          "type": "scan_status",
-          "typeSchema": "public",
+          "type": "varchar(50)",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "default": "'pending'"
         },
         "started_at": {
           "name": "started_at",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "default": "now()"
         },
         "completed_at": {
           "name": "completed_at",
           "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "summary": {
-          "name": "summary",
-          "type": "jsonb",
           "primaryKey": false,
           "notNull": false
         }
@@ -143,148 +122,6 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.settings": {
-      "name": "settings",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "github_token": {
-          "name": "github_token",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "gitlab_token": {
-          "name": "gitlab_token",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "notifications_enabled": {
-          "name": "notifications_enabled",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": true
-        },
-        "scan_frequency": {
-          "name": "scan_frequency",
-          "type": "varchar(50)",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "'daily'"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "settings_user_id_users_id_fk": {
-          "name": "settings_user_id_users_id_fk",
-          "tableFrom": "settings",
-          "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.users": {
-      "name": "users",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "email": {
-          "name": "email",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "role": {
-          "name": "role",
-          "type": "role",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'user'"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "users_email_unique": {
-          "name": "users_email_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
-        }
-      },
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
     "public.vulnerabilities": {
       "name": "vulnerabilities",
       "schema": "",
@@ -293,14 +130,13 @@
           "name": "id",
           "type": "uuid",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": true
         },
-        "scan_id": {
-          "name": "scan_id",
+        "project_id": {
+          "name": "project_id",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "title": {
           "name": "title",
@@ -308,67 +144,53 @@
           "primaryKey": false,
           "notNull": true
         },
+        "severity": {
+          "name": "severity",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
         "description": {
           "name": "description",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "severity": {
-          "name": "severity",
-          "type": "severity",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "file_path": {
-          "name": "file_path",
+        "code": {
+          "name": "code",
           "type": "text",
           "primaryKey": false,
           "notNull": false
         },
-        "line_number": {
-          "name": "line_number",
-          "type": "integer",
+        "location": {
+          "name": "location",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
-        "recommendation": {
-          "name": "recommendation",
-          "type": "text",
+        "status": {
+          "name": "status",
+          "type": "varchar(50)",
           "primaryKey": false,
-          "notNull": false
-        },
-        "is_resolved": {
-          "name": "is_resolved",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
+          "notNull": false,
+          "default": "'open'"
         },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "default": "now()"
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "vulnerabilities_scan_id_scans_id_fk": {
-          "name": "vulnerabilities_scan_id_scans_id_fk",
+        "vulnerabilities_project_id_projects_id_fk": {
+          "name": "vulnerabilities_project_id_projects_id_fk",
           "tableFrom": "vulnerabilities",
-          "tableTo": "scans",
+          "tableTo": "projects",
           "columnsFrom": [
-            "scan_id"
+            "project_id"
           ],
           "columnsTo": [
             "id"
@@ -384,36 +206,7 @@
       "isRLSEnabled": false
     }
   },
-  "enums": {
-    "public.role": {
-      "name": "role",
-      "schema": "public",
-      "values": [
-        "user",
-        "admin"
-      ]
-    },
-    "public.scan_status": {
-      "name": "scan_status",
-      "schema": "public",
-      "values": [
-        "pending",
-        "in_progress",
-        "completed",
-        "failed"
-      ]
-    },
-    "public.severity": {
-      "name": "severity",
-      "schema": "public",
-      "values": [
-        "low",
-        "medium",
-        "high",
-        "critical"
-      ]
-    }
-  },
+  "enums": {},
   "schemas": {},
   "sequences": {},
   "roles": {},

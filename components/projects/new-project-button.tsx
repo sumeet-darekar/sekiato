@@ -85,7 +85,7 @@ export function NewProjectButton() {
               ref={fileInputRef}
               onChange={handleFileChange}
               className="hidden"
-              accept=".js,.jsx,.ts,.tsx,.py,.java,.cpp,.c"
+              accept=".js,.jsx,.ts,.tsx,.py,.java,.cpp,.c,.php"
             />
             <Button
               variant="outline"
