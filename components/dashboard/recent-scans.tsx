@@ -47,7 +47,7 @@ export function RecentScans({ className }: RecentScansProps) {
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <Badge variant={scan.issues > 5 ? "destructive" : "secondary"}>
+                <Badge variant={scan.issues > 5 ? "destructive" : "outline"}>
                   {scan.issues} issues
                 </Badge>
               </div>
