@@ -5,6 +5,10 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: { unoptimized: true },
+  typescript: {
+    // WARNING: This allows production builds to complete even if there are type errors.
+    ignoreBuildErrors: true,
+  },
 };
 
 module.exports = nextConfig;

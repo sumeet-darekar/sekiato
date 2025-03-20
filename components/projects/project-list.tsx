@@ -97,7 +97,7 @@ export function ProjectList() {
                 <TableCell>{project.lastScan}</TableCell>
                 <TableCell>
                   <Badge
-                    variant={project.status === "critical" ? "destructive" : "secondary"}
+                    variant={project.status === "critical" ? "destructive" : "outline"}
                   >
                     {project.issues} issues
                   </Badge>
