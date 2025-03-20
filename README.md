@@ -17,7 +17,7 @@ A web-based application for scanning and identifying security vulnerabilities in
 - Drizzle ORM
 - TailwindCSS
 - Shadcn/ui Components
-- PHP Code Analysis API
+- PHP, JS Code Analysis API
 
 ## Installation
 
@@ -49,4 +49,4 @@ Watch the demo video to see Sekiato in action:
 - Severity classification
 - Project management
 
-[Demo Preview](https://youtu.be/HOISjf4AFT8)
+[Demo Preview](https://youtu.be/Cg7uqcX6pX4)
