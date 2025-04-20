@@ -6,6 +6,7 @@ import type { CreateProjectData } from '@/lib/types/project'
 import crypto from 'crypto'
 
 
+
 export async function getProjects() {
   return await db.select().from(projects)
 }
@@ -33,11 +34,14 @@ console.log(fileType)
 
   })
   var url = ""
-  if (fileType == 'php') {
+  if (fileType == 'c++' || fileType == 'cpp') {
     url = "http://127.0.0.1:8000/predict"
   }
   else if (fileType == 'js') {
     url = "http://127.0.0.1:8001/predict"
+  }
+  else if (fileType == 'php') {
+    url = "http://127.0.0.1:8003/predict"
   }
   
 
@@ -48,38 +52,24 @@ console.log(fileType)
     body: JSON.stringify({ code: data.code })
   })
 
+
   const result = await response.json()
-  
+  console.log(result);
   // Parse analysis results
   const vulnId = crypto.randomUUID()
 
 
-//explanation function
-function parseExplanation(analysisResults: string): string {
-  // Extract content between "Explanation:" and the next section
-  const explanationMatch = analysisResults.match(/\*\*Explanation:\*\*([\s\S]*?)(?=\*\*[A-Za-z]|$)/);
-  
-  if (!explanationMatch) {
-    return 'No explanation available';
-  }
 
-  // Clean up the extracted explanation
-  const explanation = explanationMatch[1]
-    .trim()
-    .replace(/\n+/g, '\n') // Normalize line breaks
-    .replace(/^\s+/gm, ''); // Remove leading spaces from each line
 
-  return explanation;
-}
-
-if (fileType == 'php') {
+if (fileType == 'c++' || fileType == 'cpp') {
   // Parse the analysis results
-  const analysisResults = result.llm_response	
-  const description = parseExplanation(analysisResults)
-  const severity = analysisResults.includes('Severity: High') ? 'high' : 
-                  analysisResults.includes('Severity: Medium') ? 'medium' : 'low'
-  const status = result.predicted_label	
   
+  const analysisResults = result.SekiAto_Analysis;
+//const parsedResults = parseAnalysisResults(analysisResults);
+const description = analysisResults.explanation;
+const severity = "high";
+const status = analysisResults.vulnerability_status;
+
   await db.insert(vulnerabilities).values({
     id: vulnId,
     projectId: id,
@@ -94,26 +84,36 @@ if (fileType == 'php') {
 }
 else if (fileType == 'js') {
 
-  function parsejs(analysisResults: string): string {
-    // Extract content after "Answer:" until the next section
-    const answerMatch = analysisResults.match(/Answer:(.*?)(?=\n\n|$)/s);
-
-    if (!answerMatch) {
-        return 'No answer available';
-    }
-
-    return answerMatch[1].trim(); // Return the full answer text, trimmed of whitespace
-}
-  const analysisResults = result.Explanation	
-  const description = parsejs(analysisResults)
-  const severity = analysisResults.includes('Severity: High') ? 'high' : 
-                  analysisResults.includes('Severity: Medium') ? 'medium' : 'low'
-  const status = result.vulnerability_status	
+  const description = result.description		
+  const severity = result.severity		
+  const status = result.status	
   
   await db.insert(vulnerabilities).values({
     id: vulnId,
     projectId: id,
     title: status === 'Vulnerable' ? 'Security Vulnerability Detected' : 'No Vulnerability Found',
+    severity,
+    description,
+    code: data.code,
+    location: data.repository,
+    status,
+    createdAt: new Date()
+  })
+
+}
+else if (fileType == 'php') {
+
+  console.log(result);
+  
+  const description = result.description + result.vulnerable_code	;
+  const severity = result.severity;
+  const title = result.name ;	
+  const status = result.status;	
+
+  await db.insert(vulnerabilities).values({
+    id: vulnId,
+    projectId: id,
+    title,
     severity,
     description,
     code: data.code,

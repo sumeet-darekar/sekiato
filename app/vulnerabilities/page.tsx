@@ -1,13 +1,10 @@
-import { Metadata } from "next";
+"use client";
+
 import { VulnerabilityList } from "@/components/vulnerabilities/vulnerability-list";
 import { DashboardHeader } from "@/components/dashboard/header";
 import { DashboardShell } from "@/components/dashboard/shell";
 import { VulnerabilityFilters } from "@/components/vulnerabilities/vulnerability-filters";
-
-export const metadata: Metadata = {
-  title: "Vulnerabilities - Sekiato",
-  description: "Review and manage detected vulnerabilities",
-};
+import { Button } from "@/components/ui/button";
 
 export default function VulnerabilitiesPage() {
   return (
@@ -15,7 +12,11 @@ export default function VulnerabilitiesPage() {
       <DashboardHeader
         heading="Vulnerabilities"
         description="Review and fix security issues"
-      />
+      >
+        <Button onClick={() => window.open('/api/vulnerabilities/report')}>
+          Download Report
+        </Button>
+      </DashboardHeader>
       <VulnerabilityFilters />
       <VulnerabilityList />
     </DashboardShell>
